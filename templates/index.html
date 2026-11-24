@@ -19,7 +19,7 @@
     <!-- -- Navigation bar+title -- -->
     <div class="title-bar">
         <h1>Styx Market</h1>
-        <button id="hamburger-button" class="hamburger-button" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu">&#9776;</button>
+        <!-- <button id="hamburger-button" class="hamburger-button" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu">&#9776;</button> -->
     </div>
 
     <main class="greek-underworld">
@@ -49,6 +49,19 @@
 
 
     </main>
+
+    <!-- Factory template for stock icons/items -->
+
+    <template id="stock-template">
+        <button class="stock-item" type="button">
+            <span class="stock-identifier"></span>
+            <span class="stock-change"></span>
+            <span class="stock-bubble">
+                <strong class="bubble-text"></strong>
+                <span class="bubble-movement"></span>
+            </span>
+        </button>
+    </template>
 
     <script src="../frontend/js/pixelate.js"></script>
 </body>

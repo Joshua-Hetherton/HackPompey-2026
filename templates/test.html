@@ -216,9 +216,9 @@
   <div id="tooltip"></div>
 
   <script>
-    // Automatically points to Flask on port 5000 even if opened via Live Server or file://
+    // Use the current origin when served by Flask; otherwise target Flask on port 9000.
     const API_BASE =
-      window.location.port === "5000" ? "" : "http://127.0.0.1:5000";
+      window.location.port === "9000" ? "" : "http://127.0.0.1:9000";
 
     const REALM_IDS = ["elysium", "asphodel", "fields-of-punishment", "tartarus"];
     const statusBar = document.getElementById("status-bar");

@@ -13,6 +13,9 @@ class Stock:
     current_status: str = ""
     fun_lore: str = ""
 
+    def __post_init__(self) -> None:
+        pass
+
     def to_dict(self) -> dict:
         return asdict(self)
 

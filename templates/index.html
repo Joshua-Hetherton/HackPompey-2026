@@ -3,6 +3,7 @@
     <head>
         <title>Styx Market</title>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../frontend/css/main.css"> 
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +19,36 @@
     <!-- -- Navigation bar+title -- -->
     <div class="title-bar">
         <h1>Styx Market</h1>
+        <button id="hamburger-button" class="hamburger-button" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu">&#9776;</button>
     </div>
 
+    <main class="greek-underworld">
+
+        <!-- data-image="../frontend/images/elysium.jpg" -->
+        <section id="elysium" class="tier tier-elysium" data-tier="elysium" data-image="../frontend/assets/images/panorama-with-the-abduction-of-helen-amidst-maarten-van-heemskerck.jpg" data-block="8">
+            <h2>Elysium</h2>
+            <p>Best performers this month</p>
+        </section>  
+
+        <section id="asphodel" class="tier tier-asphodel" data-tier="asphodel" data-image="../frontend/assets/images/asphodel_picture.jpg" data-block="8">
+            <h2>Asphodel</h2>
+            <p>Holding steady</p>
+        </section>  
+        <section id="fields-of-punishment" class="tier tier-punishment" data-tier="punishment" data-image="../frontend/assets/images/the-destruction-of-pompeii-and-herculaneum-john-martin.jpg" data-block="6">
+            <h2>Fields of Punishment</h2>
+            <p>Struggling</p>
+        </section>
+
+        <section id="tartarus" class="tier tier-tartarus" data-tier="tartarus" data-image="../frontend/assets/images/an-eruption-hawaii-jules-tavernier.jpg" data-block="7">
+            <h2>Tartarus</h2>
+            <p>The Bottom performers</p>
+        </section>
+
+        <div id="stock-layer" class="stock-layer"></div>
+        
+
+
+    </main>
+
+    <script src="../frontend/js/pixelate.js"></script>
 </body>

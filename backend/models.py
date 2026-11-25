@@ -12,6 +12,7 @@ class Stock:
     id: str = ""
     current_status: str = ""
     fun_lore: str = ""
+    previous_id: str=""
 
     def __post_init__(self) -> None:
         pass
@@ -51,6 +52,15 @@ class StockFactory:
     """Creational Factory: builds the right Stock subclass based on daily performance."""
 
     @staticmethod
+    def tier_id(pct_1d: float) -> str:
+        if pct_1d >= 2.0:
+            return "elysium"
+        elif pct_1d > -1.0:
+            return "asphodel"
+        elif pct_1d > -4.0:
+            return "fields-of-punishment"
+        else:
+            return "tartarus"
     def create_stock(
         symbol: str,
         category: str,
@@ -58,6 +68,7 @@ class StockFactory:
         pct_1d: float,
         pct_1w: float,
         pct_1y: float,
+        pct_prev_1d: float | None = None
     ) -> Stock:
         data = {
             "symbol": symbol,
@@ -66,13 +77,14 @@ class StockFactory:
             "pct_change_1d": pct_1d,
             "pct_change_1w": pct_1w,
             "pct_change_1y": pct_1y,
+            "previous_id": StockFactory.tier_id(pct_1d) if pct_prev_1d is not None else "",
         }
 
-        if pct_1d >= 2.0:
-            return ElysiumStock(**data)
-        elif pct_1d > -1.0:
-            return AsphodelStock(**data)
-        elif pct_1d > -4.0:
-            return PunishmentStock(**data)
-        else:
-            return TartarusStock(**data)
+        classes = {
+            "elysium": ElysiumStock,
+            "asphodel": AsphodelStock,
+            "fields-of-punishment": PunishmentStock,
+            "tartarus": TartarusStock,
+        }
+
+        return classes[StockFactory.tier_id(pct_1d)](**data)

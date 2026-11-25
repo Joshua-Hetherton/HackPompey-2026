@@ -51,9 +51,9 @@ h1, h2, h3, h4, h5, h6 {
 
 
 /* ---- Tiers/Layers ---- */
-/* .greek-underworld {
+.greek-underworld {
   position: relative;
-} */
+}
 
 .tier {
   position: relative;
@@ -108,10 +108,98 @@ h1, h2, h3, h4, h5, h6 {
 .pixelated {
   image-rendering: pixelated;
 }
-
-#stock-layer{
-  position:absolute; 
-  inset:0; 
-  pointer-events:none
+/* Seperator layer */
+.transition-layer {
+  height: 80px;
+  background: #000;
 }
 
+/* Stock visuals */
+
+.stock-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.stock-item {
+  position: absolute;
+  width: 72px; 
+  height: 72px; 
+  padding: 0;
+
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 3px 3px 0 #000;
+  font:inherit;
+  cursor:pointer;
+
+  border: 3px solid #000;
+  background: #f7f2e4;
+  color: #111;
+  transition: top 4s ease-in-out;
+}
+
+.stock-identifier { 
+  font-size: .8rem; 
+  font-weight: 700; 
+}
+
+.stock-change { 
+  font-size: .7rem; 
+}
+
+.stock-item.up .stock-change {
+  color: #176a2a;
+}
+
+.stock-item.down .stock-change {
+  color: #a71d2a;
+}
+
+.stock-item.open {
+  z-index: 5;
+}
+
+
+/* the stock bubble */
+
+.stock-bubble {
+  display: none; 
+  position: absolute; 
+  bottom: calc(100% + 10px); 
+  left: 50%; 
+  transform: translateX(-50%);
+
+  width: 190px; 
+  box-sizing: border-box; 
+  padding: 8px 10px; 
+  text-align: left;
+
+  font-size: .8rem; 
+  line-height: 1.35; 
+  background: #f7f2e4; 
+  color: #111; 
+  border: 3px solid #000;
+}
+
+.stock-item.open .stock-bubble { display: block; }
+.stock-item.edge-left .stock-bubble { left: 0; transform: none; }
+.stock-item.edge-right .stock-bubble { left: auto; right: 0; transform: none; }
+.bubble-text, .bubble-movement { display: block; }
+.bubble-movement { margin-top: 4px; }
+
+.status {
+  position: absolute; top: calc(var(--title-height) + 8px); left: 20px; right: 20px; z-index: 6;
+  margin: 0; padding: 10px; text-align: center; background: #000; border: 3px solid #a3170f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stock-item { transition: none; }
+}

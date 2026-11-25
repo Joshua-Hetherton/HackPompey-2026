@@ -61,6 +61,8 @@ class StockFactory:
             return "fields-of-punishment"
         else:
             return "tartarus"
+
+    @staticmethod
     def create_stock(
         symbol: str,
         category: str,
@@ -77,7 +79,7 @@ class StockFactory:
             "pct_change_1d": pct_1d,
             "pct_change_1w": pct_1w,
             "pct_change_1y": pct_1y,
-            "previous_id": StockFactory.tier_id(pct_1d) if pct_prev_1d is not None else "",
+            "previous_id": StockFactory.tier_id(pct_prev_1d) if pct_prev_1d is not None else "",
         }
 
         classes = {

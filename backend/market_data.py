@@ -61,6 +61,7 @@ def get_stocks_by_category(category: str) -> list[Stock]:
 
             curr_price = float(closes.iloc[-1])
             price_1d_ago = float(closes.iloc[-2])
+            price_2d_ago = float(closes.iloc[-3]) if len(closes) >= 3 else price_1d_ago
             price_1w_ago = float(closes.iloc[-6]) if len(closes) >= 6 else float(closes.iloc[0])
             price_1y_ago = float(closes.iloc[0])
 
@@ -71,6 +72,7 @@ def get_stocks_by_category(category: str) -> list[Stock]:
                 pct_1d=calc_pct(curr_price, price_1d_ago),
                 pct_1w=calc_pct(curr_price, price_1w_ago),
                 pct_1y=calc_pct(curr_price, price_1y_ago),
+                pct_prev_1d=calc_pct(price_1d_ago, price_2d_ago) if price_2d_ago else None
             )
             stocks.append(stock_obj)
 

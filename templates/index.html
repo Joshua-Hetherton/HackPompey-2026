@@ -22,6 +22,17 @@
         <!-- <button id="hamburger-button" class="hamburger-button" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu">&#9776;</button> -->
     </div>
 
+    <!-- Crossing: pay the ferryman, then sail into the underworld -->
+    <section id="crossing" class="crossing" data-image="../frontend/assets/images/styxcrossing.jpg" data-block="8">
+        <p class="crossing-prompt">Click the coin to pay the ferryman and cross into the market.</p>
+        <div class="crossing-water" aria-hidden="true"></div>
+        <button id="coin" class="coin" type="button" aria-label="Pay Charon the ferryman">
+            <img src="../frontend/assets/images/coin.png" alt="">
+        </button>
+        <img id="rowboat" class="rowboat" src="../frontend/assets/images/rowboat.png" alt="Charon the ferryman in his rowing boat">
+        <button id="skip-crossing" class="skip" type="button">Skip</button>
+    </section>
+
     <main class="greek-underworld">
         <p id="status" class="status" role="status" hidden></p>
 
@@ -74,4 +85,5 @@
 
     <script src="../frontend/js/pixelate.js"></script>
      <script src="../frontend/js/stock.js"></script>
+    <script src="../frontend/js/styx-crossing.js"></script>
 </body>

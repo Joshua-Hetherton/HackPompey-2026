@@ -47,7 +47,10 @@ h1, h2, h3, h4, h5, h6 {
 .menu button { background: none; border: 0; color: inherit; padding: 8px 12px; }
 
 
-
+.transition-layer {
+  height: 80px;
+  background: #000;
+}
 
 
 /* ---- Tiers/Layers ---- */
@@ -202,4 +205,121 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (prefers-reduced-motion: reduce) {
   .stock-item { transition: none; }
+}
+
+/* ---- Styx crossing ---- */
+body.locked { overflow: hidden; }
+
+.crossing {
+  --boat-width: clamp(140px, 32vw, 320px);
+  --ferry-time: 5s;
+
+  position: relative;
+  height: 100svh;
+  min-height: 520px;
+  overflow: hidden;
+  background-color: #292b2e;
+  background-image: linear-gradient(#292b2e, #292b2e);
+  background-size: cover;
+  background-position: center;
+}
+
+.crossing::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(32, 35, 38, .32);
+  pointer-events: none;
+}
+
+.crossing-prompt {
+  position: absolute;
+  top: calc(var(--title-height) + 34px);
+  left: 0;
+  right: 0;
+  z-index: 4;
+  margin: 0;
+  padding: 0 24px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.crossing-water {
+  position: absolute;
+  top: 56%;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 24% 18%, rgba(147, 158, 163, .16), transparent 52%), linear-gradient(180deg, rgba(91, 103, 108, .3) 0%, rgba(42, 48, 53, .68) 52%, rgba(8, 10, 12, .96) 100%);
+}
+
+.coin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  width: 56px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  animation: coin-bob 1.2s steps(2) infinite alternate;
+}
+
+.coin img {
+  display: block;
+  width: 100%;
+  image-rendering: pixelated;
+  scale: 1.5;
+}
+
+.coin.paid {
+  left: calc(4% + var(--boat-width) / 2);
+  top: 72%;
+  opacity: 0;
+  animation: none;
+  transition: left .9s cubic-bezier(.2, .75, .3, 1), top .9s cubic-bezier(.2, .75, .3, 1), opacity .25s ease .65s;
+}
+
+.rowboat {
+  position: absolute;
+  left: 4%;
+  top: 72%;
+  z-index: 2;
+  width: var(--boat-width);
+  image-rendering: pixelated;
+  transform: translateY(-50%);
+  transition: left var(--ferry-time) linear;
+}
+
+.rowboat.sailing {
+  left: calc(100% - var(--boat-width) - 4%);
+  animation: rock .8s steps(2) infinite alternate;
+}
+
+.skip {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 4;
+  padding: 6px 12px;
+  background: #000;
+  color: inherit;
+  border: 2px solid #3a2a55;
+  font: inherit;
+  cursor: pointer;
+}
+
+@keyframes coin-bob { to { transform: translate(-50%, calc(-50% - 8px)); } }
+@keyframes rock { to { transform: translateY(calc(-50% - 4px)); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .coin, .rowboat {
+    transition: none;
+    animation: none;
+  }
 }

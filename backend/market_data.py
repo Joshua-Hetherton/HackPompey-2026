@@ -70,6 +70,7 @@ def get_stocks_by_category(category: str) -> list[Stock]:
                 category=category,
                 price=curr_price,
                 pct_1d=calc_pct(curr_price, price_1d_ago),
+                pct_2d=calc_pct(curr_price, price_2d_ago),
                 pct_1w=calc_pct(curr_price, price_1w_ago),
                 pct_1y=calc_pct(curr_price, price_1y_ago),
                 pct_prev_1d=calc_pct(price_1d_ago, price_2d_ago) if price_2d_ago else None

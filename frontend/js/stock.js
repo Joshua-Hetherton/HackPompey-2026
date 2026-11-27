@@ -2,7 +2,10 @@
 
 const API_BASE_URL = window.location.port === '9000' ? '/api' : 'http://127.0.0.1:9000/api';
 
-const Category="tech";
+let currentCategory = "tech";
+let currentTimeframe = "1d";
+let latestRequest = 0;
+let currentStocks = [];
 
 
 const TIERS = {
@@ -28,7 +31,6 @@ const MIN_TIER_HEIGHT = 560;
 const TIER_IDS = Object.keys(TIERS);
 
 
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const $ = (selector) => document.querySelector(selector);
 
 function do_format_change(change) {
@@ -43,34 +45,42 @@ function show_Status(message, isError = false) {
 }
 
 async function Load_stock_data() {
+    const requestId = ++latestRequest;
     try {
-        const response = await fetch(`${API_BASE_URL}/market/${Category}`);
+        const response = await fetch(`${API_BASE_URL}/market/${currentCategory}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        if (requestId !== latestRequest) return;
         if(!data.souls.length) {
+            currentStocks = [];
+            $("#stock-layer").replaceChildren();
             show_Status("No market data came back. Try refreshing in a minute.");
             return;
         }
+        currentStocks = data.souls;
         render_stocks(data.souls);
 
 
 
 
     } catch (error) {
+        if (requestId !== latestRequest) return;
         show_Status("An error occurred while loading stock data.", true);
         console.error("Error fetching stock data:", error);
     }
 }
 
-function render_stocks(stocks) {
+function render_stocks(stocks, animateMovements = true) {
     const layer=$("#stock-layer");
     const template=$("#stock-template");
+    const changeKey = `pct_change_${currentTimeframe}`;
 
     const sorted = stocks.filter((stock) => TIER_IDS.includes(stock.id))
-        .sort((a, b) => b.pct_change_1d - a.pct_change_1d);
+        .sort((a, b) => b[changeKey] - a[changeKey]);
 
+    layer.replaceChildren();
     const counts= Object.fromEntries(Object.keys(TIERS).map((tier) => [tier, 0]));
     sorted.forEach((stock) => {
         counts[stock.id]++;
@@ -112,16 +122,17 @@ function render_stocks(stocks) {
         
         //Contents of the stock card
 
-        node.classList.add(stock.pct_change_1d >= 0 ? 'up' : 'down');
+        const change = stock[changeKey];
+        node.classList.add(change >= 0 ? 'up' : 'down');
         if (inRow > 1 && col === 0) node.classList.add('edge-left');
         if (inRow > 1 && col === inRow - 1) node.classList.add('edge-right');
         node.querySelector('.stock-identifier').textContent = stock.symbol.replace('-USD', '');
-        node.querySelector('.stock-change').textContent = do_format_change(stock.pct_change_1d);
+        node.querySelector('.stock-change').textContent = do_format_change(change);
         node.querySelector('.bubble-text').textContent = stock.fun_lore;
-        node.setAttribute('aria-label', `${stock.symbol}, ${stock.current_status}, ${do_format_change(stock.pct_change_1d)} today`);
+        node.setAttribute('aria-label', `${stock.symbol}, ${stock.current_status}, ${do_format_change(change)} over ${currentTimeframe.toUpperCase()}`);
         node.addEventListener('click', () => node.classList.toggle('open'));
 
-        const moved = TIER_IDS.includes(stock.previous_id) && stock.previous_id !== stock.id;
+        const moved = animateMovements && TIER_IDS.includes(stock.previous_id) && stock.previous_id !== stock.id;
         node.style.left = `${left}%`;
         if (moved) {
             const oldTier = $(`#${stock.previous_id}`);
@@ -144,19 +155,35 @@ function render_stocks(stocks) {
 function startMove(node) {
     node.querySelector('.bubble-movement').textContent = node.dataset.moveText;
 
-    const arrive = () => {
-        node.classList.add('open');
-        setTimeout(() => node.classList.remove('open'), 6000);
-    };
-
     setTimeout(() => {
         node.style.top = node.dataset.endTop;
-        if (prefersReducedMotion) {
-            arrive();
-        } else {
-            node.addEventListener('transitionend', arrive, { once: true });
-        }
     }, 300);
 }
+
+document.querySelectorAll("[data-category]").forEach((button) => {
+    button.addEventListener("click", () => {
+        currentCategory = button.dataset.category;
+        currentStocks = [];
+        document.querySelectorAll("[data-category]").forEach((categoryButton) => {
+            const isActive = categoryButton === button;
+            categoryButton.classList.toggle("is-active", isActive);
+            categoryButton.setAttribute("aria-pressed", String(isActive));
+        });
+        $("#stock-layer").replaceChildren();
+        Load_stock_data();
+    });
+});
+
+document.querySelectorAll("[data-timeframe]").forEach((button) => {
+    button.addEventListener("click", () => {
+        currentTimeframe = button.dataset.timeframe;
+        document.querySelectorAll("[data-timeframe]").forEach((timeframeButton) => {
+            const isActive = timeframeButton === button;
+            timeframeButton.classList.toggle("is-active", isActive);
+            timeframeButton.setAttribute("aria-pressed", String(isActive));
+        });
+        render_stocks(currentStocks, false);
+    });
+});
 
 Load_stock_data();

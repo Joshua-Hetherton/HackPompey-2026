@@ -17,10 +17,23 @@
 
 <body>
     <!-- -- Navigation bar+title -- -->
-    <div class="title-bar">
+    <header class="title-bar">
+        <nav class="market-controls" aria-label="Market controls">
+            <div class="control-group category-controls" role="group" aria-label="Stock category">
+                <button class="market-control is-active" type="button" data-category="tech" aria-pressed="true">Tech</button>
+                <button class="market-control" type="button" data-category="finance" aria-pressed="false">Finance</button>
+                <button class="market-control" type="button" data-category="energy" aria-pressed="false">Energy</button>
+                <button class="market-control" type="button" data-category="crypto" aria-pressed="false">Crypto</button>
+            </div>
+            <div class="control-group timeframe-controls" role="group" aria-label="Performance timeframe">
+                <button class="market-control is-active" type="button" data-timeframe="1d" aria-pressed="true">1D</button>
+                <button class="market-control" type="button" data-timeframe="2d" aria-pressed="false">2D</button>
+                <button class="market-control" type="button" data-timeframe="1w" aria-pressed="false">1W</button>
+                <button class="market-control" type="button" data-timeframe="1y" aria-pressed="false">1Y</button>
+            </div>
+        </nav>
         <h1>Styx Market</h1>
-        <!-- <button id="hamburger-button" class="hamburger-button" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu">&#9776;</button> -->
-    </div>
+    </header>
 
     <!-- Crossing: pay the ferryman, then sail into the underworld -->
     <section id="crossing" class="crossing" data-image="../frontend/assets/images/styxcrossing.jpg" data-block="8">
